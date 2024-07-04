@@ -1,10 +1,11 @@
 CC = gcc
-CFLAGS = -O2 -fopenmp
+CFLAGS = -O2 -fopenmp 
 
-FC = gfortran
-FFLAGS = -O2 -fopenmp
+#FC = gfortran
+#FFLAGS = -O2 -fopenmp
 
-all: stream_f.exe stream_c.exe
+#all: stream_f.exe stream_c.exe
+all: stream_c.exe
 
 stream_f.exe: stream.f mysecond.o
 	$(CC) $(CFLAGS) -c mysecond.c
@@ -12,7 +13,7 @@ stream_f.exe: stream.f mysecond.o
 	$(FC) $(FFLAGS) stream.o mysecond.o -o stream_f.exe
 
 stream_c.exe: stream.c
-	$(CC) $(CFLAGS) stream.c -o stream_c.exe
+	$(CC) $(CFLAGS) -static -DSTREAM_ARRAY_SIZE=819200 stream.c -o stream_c.exe
 
 clean:
 	rm -f stream_f.exe stream_c.exe *.o
