@@ -219,6 +219,13 @@ extern void tuned_STREAM_Triad(STREAM_TYPE scalar, ssize_t stream_array_size);
 #ifdef _OPENMP
 extern int omp_get_num_threads();
 #endif
+#define PRINT
+#ifdef PRINT
+#define PRINT_LOG(x) printf("%d - %ld\r", __LINE__, x)
+#else
+#define PRINT_LOG(x)
+#endif
+
 int
 main(int argc, char **argv)
     {
@@ -331,6 +338,7 @@ main(int argc, char **argv)
     /* Get initial value for system clock. */
 #pragma omp parallel for
     for (j=0; j<stream_array_size; j++) {
+	    PRINT_LOG(j);
 	    a[j] = 1.0;
 	    b[j] = 2.0;
 	    c[j] = 0.0;
@@ -354,8 +362,10 @@ main(int argc, char **argv)
 
     t = mysecond();
 #pragma omp parallel for
-    for (j = 0; j < stream_array_size; j++)
+    for (j = 0; j < stream_array_size; j++) {
+	        PRINT_LOG(j);
 		a[j] = 2.0E0 * a[j];
+    }
     t = 1.0E6 * (mysecond() - t);
 
     printf("Each test below will take on the order"
@@ -381,8 +391,10 @@ main(int argc, char **argv)
         tuned_STREAM_Copy(stream_array_size);
 #else
 #pragma omp parallel for
-	for (j=0; j<stream_array_size; j++)
+	for (j=0; j<stream_array_size; j++) {
+	    PRINT_LOG(j);
 	    c[j] = a[j];
+	}
 #endif
 	times[0][k] = mysecond() - times[0][k];
 	
@@ -391,8 +403,10 @@ main(int argc, char **argv)
         tuned_STREAM_Scale(scalar, stream_array_size);
 #else
 #pragma omp parallel for
-	for (j=0; j<stream_array_size; j++)
+	for (j=0; j<stream_array_size; j++) {
+	    PRINT_LOG(j);
 	    b[j] = scalar*c[j];
+	}
 #endif
 	times[1][k] = mysecond() - times[1][k];
 	
@@ -401,8 +415,10 @@ main(int argc, char **argv)
         tuned_STREAM_Add(stream_array_size);
 #else
 #pragma omp parallel for
-	for (j=0; j<stream_array_size; j++)
+	for (j=0; j<stream_array_size; j++) {
+	    PRINT_LOG(j);
 	    c[j] = a[j]+b[j];
+	}
 #endif
 	times[2][k] = mysecond() - times[2][k];
 	
@@ -411,8 +427,10 @@ main(int argc, char **argv)
         tuned_STREAM_Triad(scalar, stream_array_size);
 #else
 #pragma omp parallel for
-	for (j=0; j<stream_array_size; j++)
+	for (j=0; j<stream_array_size; j++) {
+	    PRINT_LOG(j);
 	    a[j] = b[j]+scalar*c[j];
+	}
 #endif
 	times[3][k] = mysecond() - times[3][k];
 	}
