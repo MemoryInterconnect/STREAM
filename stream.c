@@ -351,10 +351,10 @@ main(int argc, char **argv)
     printf(HLINE);
 
     if  ( (quantum = checktick()) >= 1) 
-	printf("Your clock granularity/precision appears to be "
+	printf("\rYour clock granularity/precision appears to be "
 	    "%d microseconds.\n", quantum);
     else {
-	printf("Your clock granularity appears to be "
+	printf("\rYour clock granularity appears to be "
 	    "less than one microsecond.\n");
 	quantum = 1;
     }
@@ -373,7 +373,7 @@ main(int argc, char **argv)
     }
     t = 1.0E6 * (mysecond() - t);
 
-    printf("Each test below will take on the order"
+    printf("\rEach test below will take on the order"
 	" of %d microseconds.\n", (int) t  );
     printf("   (= %d clock ticks)\n", (int) (t/quantum) );
     printf("Increase the size of the arrays if this shows that\n");
