@@ -398,7 +398,7 @@ main(int argc, char **argv)
 #pragma omp parallel for
 	for (j=0; j<stream_array_size; j++) {
 	    PRINT_LOG(j);
-	    PRINT_PROGRESS("COPY", j);
+	    PRINT_PROGRESS("COPY (c = a)", j);
 	    c[j] = a[j];
 	}
 #endif
@@ -411,7 +411,7 @@ main(int argc, char **argv)
 #pragma omp parallel for
 	for (j=0; j<stream_array_size; j++) {
 	    PRINT_LOG(j);
-	    PRINT_PROGRESS("SCALE", j);
+	    PRINT_PROGRESS("SCALE (b = 3.0*c)", j);
 	    b[j] = scalar*c[j];
 	}
 #endif
@@ -424,7 +424,7 @@ main(int argc, char **argv)
 #pragma omp parallel for
 	for (j=0; j<stream_array_size; j++) {
 	    PRINT_LOG(j);
-	    PRINT_PROGRESS("ADD", j);
+	    PRINT_PROGRESS("ADD (c = a + b)", j);
 	    c[j] = a[j]+b[j];
 	}
 #endif
@@ -437,7 +437,7 @@ main(int argc, char **argv)
 #pragma omp parallel for
 	for (j=0; j<stream_array_size; j++) {
 	    PRINT_LOG(j);
-	    PRINT_PROGRESS("TRIAD", j);
+	    PRINT_PROGRESS("TRIAD (a = b + 3.0*c)", j);
 	    a[j] = b[j]+scalar*c[j];
 	}
 #endif
