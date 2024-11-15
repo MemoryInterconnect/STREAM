@@ -219,12 +219,15 @@ extern void tuned_STREAM_Triad(STREAM_TYPE scalar, ssize_t stream_array_size);
 #ifdef _OPENMP
 extern int omp_get_num_threads();
 #endif
-#define PRINT
+//#define PRINT
 #ifdef PRINT
 #define PRINT_LOG(x) printf("%d - %ld\r", __LINE__, x)
 #else
 #define PRINT_LOG(x)
 #endif
+#define PRINT_PROGRESS(name, x) do {\
+	if ( x % 10 == 0 ) printf("\r%s - %ld", name, x);\
+	} while(0)
 
 int
 main(int argc, char **argv)
@@ -339,6 +342,7 @@ main(int argc, char **argv)
 #pragma omp parallel for
     for (j=0; j<stream_array_size; j++) {
 	    PRINT_LOG(j);
+	    PRINT_PROGRESS("Setup initial values", j);
 	    a[j] = 1.0;
 	    b[j] = 2.0;
 	    c[j] = 0.0;
@@ -364,6 +368,7 @@ main(int argc, char **argv)
 #pragma omp parallel for
     for (j = 0; j < stream_array_size; j++) {
 	        PRINT_LOG(j);
+	        PRINT_PROGRESS("a = a * 2.0e0", j);
 		a[j] = 2.0E0 * a[j];
     }
     t = 1.0E6 * (mysecond() - t);
@@ -393,6 +398,7 @@ main(int argc, char **argv)
 #pragma omp parallel for
 	for (j=0; j<stream_array_size; j++) {
 	    PRINT_LOG(j);
+	    PRINT_PROGRESS("COPY", j);
 	    c[j] = a[j];
 	}
 #endif
@@ -405,6 +411,7 @@ main(int argc, char **argv)
 #pragma omp parallel for
 	for (j=0; j<stream_array_size; j++) {
 	    PRINT_LOG(j);
+	    PRINT_PROGRESS("SCALE", j);
 	    b[j] = scalar*c[j];
 	}
 #endif
@@ -417,6 +424,7 @@ main(int argc, char **argv)
 #pragma omp parallel for
 	for (j=0; j<stream_array_size; j++) {
 	    PRINT_LOG(j);
+	    PRINT_PROGRESS("ADD", j);
 	    c[j] = a[j]+b[j];
 	}
 #endif
@@ -429,6 +437,7 @@ main(int argc, char **argv)
 #pragma omp parallel for
 	for (j=0; j<stream_array_size; j++) {
 	    PRINT_LOG(j);
+	    PRINT_PROGRESS("TRIAD", j);
 	    a[j] = b[j]+scalar*c[j];
 	}
 #endif
@@ -447,7 +456,7 @@ main(int argc, char **argv)
 	    }
 	}
     
-    printf("Function    Best Rate MB/s  Avg time     Min time     Max time\n");
+    printf("\rFunction    Best Rate MB/s  Avg time     Min time     Max time\n");
     for (j=0; j<4; j++) {
 		avgtime[j] = avgtime[j]/(double)(NTIMES-1);
 
