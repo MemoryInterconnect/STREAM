@@ -226,7 +226,7 @@ extern int omp_get_num_threads();
 #define PRINT_LOG(x)
 #endif
 #define PRINT_PROGRESS(name, x) do {\
-	if ( x % 1024 == 0 ) printf("\r%s - %ld/%ld", name, x, stream_array_size);\
+	if ( x % 1024 == 0 ) printf("\r%s - %ld/%ld                        ", name, x, stream_array_size);\
 	} while(0)
 
 int
