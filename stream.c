@@ -53,6 +53,9 @@
 #include <sys/mman.h>
 #include <stdlib.h>
 
+//swsok
+#include <stdint.h>
+
 /*-----------------------------------------------------------------------
  * INSTRUCTIONS:
  *
@@ -522,6 +525,7 @@ checktick()
 
 #include <sys/time.h>
 
+#if 0
 double mysecond()
 {
         struct timeval tp;
@@ -531,6 +535,21 @@ double mysecond()
         i = gettimeofday(&tp,&tzp);
         return ( (double) tp.tv_sec + (double) tp.tv_usec * 1.e-6 );
 }
+#else
+static uintptr_t rdcycle()
+{
+  uintptr_t out;
+  __asm__ __volatile__ ("rdcycle %0" : "=r"(out));
+  return out;
+}
+
+double mysecond()
+{
+	double t = 0;
+	return t;
+}
+#endif
+
 
 #ifndef abs
 #define abs(a) ((a) >= 0 ? (a) : -(a))
