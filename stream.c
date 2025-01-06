@@ -53,7 +53,7 @@
 #include <sys/mman.h>
 #include <stdlib.h>
 
-//swsok
+//swsok, definition of uintptr_t
 #include <stdint.h>
 
 /*-----------------------------------------------------------------------
@@ -543,9 +543,13 @@ static uintptr_t rdcycle()
   return out;
 }
 
+//100MHz
+#define CLOCK_PER_SEC 100000000
 double mysecond()
 {
 	double t = 0;
+	uintptr_t clockcounter = rdcycle();
+	t = clockcounter / CLOCK_PER_SEC;
 	return t;
 }
 #endif
