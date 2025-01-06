@@ -225,13 +225,13 @@ extern int omp_get_num_threads();
 //#define PRINT
 #ifdef PRINT
 #define PRINT_LOG(x) printf("%d - %ld\r", __LINE__, x)
-#else
-#define PRINT_LOG(x)
-#endif
 #define PRINT_PROGRESS(name, x) do {\
 	if ( x % 10240 == 0 ) printf("\r%s - %ld/%ld                        ", name, x, stream_array_size);\
 	} while(0)
-
+#else
+#define PRINT_LOG(x)
+#define PRINT_PROGRESS(name, x)
+#endif
 int
 main(int argc, char **argv)
     {
@@ -549,7 +549,7 @@ double mysecond()
 {
 	double t = 0;
 	uintptr_t clockcounter = rdcycle();
-	t = clockcounter / CLOCK_PER_SEC;
+	t = (double)clockcounter / CLOCK_PER_SEC;
 	return t;
 }
 #endif
